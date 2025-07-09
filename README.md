@@ -73,7 +73,3 @@ The UI components include standard Lazarus controls such as `TMemo`, `TEdit`, `T
 ## Feedback and Contributions
 
 Feel free to open issues or submit pull requests to improve the client.
-
----
-
-*Made with ❤️ by Niel Buys*
