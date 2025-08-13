@@ -80,9 +80,12 @@ begin
 
   with ChatHistoryMemo do
   begin
-    SelStart := Length(Text); // Move cursor to end
-    SelLength := 0;           // No selection
-    Perform(EM_SCROLLCARET, 0, 0); // Scroll to caret
+    // Set the caret position to the last character
+    SelStart := Length(Text);
+    SelLength := 0;
+
+    // Manually set the vertical scroll position to the last line
+    CaretPos := Point(0, Lines.Count - 1);
   end;
 
   // Optional: Clear input box for next message
