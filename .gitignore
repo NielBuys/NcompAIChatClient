@@ -35,3 +35,4 @@ ConverterBackup
 *.deb
 
 *.ini
+/AIChatClient
