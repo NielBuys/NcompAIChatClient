@@ -153,6 +153,8 @@ var
   i: Integer;
   ResponseJSON: TJSONObject;
   Part: string;
+  S: string;
+  Node: TJSONData;
 begin
   Result := '';
   HTTP := THTTPSend.Create;
@@ -184,38 +186,63 @@ begin
         ResponseStream.Position := 0;
         HTTP.Document.LoadFromStream(ResponseStream);
 
-        if HTTP.HTTPMethod('POST', OllamaURL + '/api/chat') then
-        begin
-          // Read the whole response
-          ResponseStream.Clear;
-          HTTP.Document.Position := 0;
-          ResponseStream.CopyFrom(HTTP.Document, HTTP.Document.Size);
-          ResponseStream.Position := 0;
+        try
+          if HTTP.HTTPMethod('POST', OllamaURL) then
+          begin
+            // Read the whole response
+            ResponseStream.Clear;
+            HTTP.Document.Position := 0;
+            ResponseStream.CopyFrom(HTTP.Document, HTTP.Document.Size);
+            ResponseStream.Position := 0;
 
-          // Split response into lines (each line is a JSON chunk)
-          Lines := TStringList.Create;
-          try
-            Lines.Text := ResponseStream.DataString;
-            Result := '';
-            for i := 0 to Lines.Count - 1 do
-            begin
-              if Trim(Lines[i]) = '' then
-                Continue;
-              ResponseJSON := GetJSON(Lines[i]) as TJSONObject;
-              try
-                Part := ResponseJSON.FindPath('message.content').AsString;
-                Result := Result + Part;
-              finally
-                ResponseJSON.Free;
+            // Split response into lines (each line is a JSON chunk)
+            Lines := TStringList.Create;
+            try
+              Lines.Text := ResponseStream.DataString;
+              Result := '';
+              for i := 0 to Lines.Count - 1 do
+              begin
+                if Trim(Lines[i]) = '' then
+                  Continue;
+                ResponseJSON := GetJSON(Lines[i]) as TJSONObject;
+                try
+                  // If there's message.content, append it
+                  Node := ResponseJSON.FindPath('message.content');
+                  if Assigned(Node) then
+                  begin
+                    Result := Result + Node.AsString;
+                    Continue;
+                  end;
+
+                  // If there's an error, return it immediately
+                  Node := ResponseJSON.FindPath('error');
+                  if Assigned(Node) then
+                  begin
+                    Result := 'Error: ' + Node.AsString;
+                    Exit;
+                  end;
+
+                  // If it's the final line, stop
+                  Node := ResponseJSON.FindPath('done');
+                  if Assigned(Node) and (Node.JSONType = jtBoolean) and Node.AsBoolean then
+                    Break;
+
+                  // Otherwise ignore progress-only lines (model, created_at, etc.)
+                finally
+                  ResponseJSON.Free;
+                end;
               end;
-            end;
 
-          finally
-            Lines.Free;
-          end;
-        end
-        else
-          Result := 'HTTP Error: ' + HTTP.ResultString;
+            finally
+              Lines.Free;
+            end;
+          end
+          else
+            Result := 'HTTP Error: ' + HTTP.ResultString;
+        except
+          on E: Exception do
+            Result := 'Exception: ' + E.Message;
+        end;
       finally
         ResponseStream.Free;
       end;

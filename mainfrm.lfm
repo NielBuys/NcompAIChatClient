@@ -7,10 +7,10 @@ object MainForm: TMainForm
   ClientHeight = 489
   ClientWidth = 775
   DesignTimePPI = 120
+  Position = poWorkAreaCenter
+  LCLVersion = '4.2.0.0'
   OnClose = FormClose
   OnCreate = FormCreate
-  Position = poWorkAreaCenter
-  LCLVersion = '3.8.0.0'
   object SendBtn: TButton
     Left = 664
     Height = 31

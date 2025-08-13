@@ -70,7 +70,7 @@ Run the installer and follow prompts to install the client on your system.
 
 1\. Launch \*\*NComp AI Chat Client\*\*.
 
-2\. Enter the Ollama API URL (e.g. `http://localhost:11434` or your server IP).
+2\. Enter the Ollama API URL (e.g. `http://localhost:11434/api/chat` or your server IP).
 
 3\. Enter the AI model name (e.g. `gemma3n:e4b`).
 
