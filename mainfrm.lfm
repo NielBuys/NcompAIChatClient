@@ -1,55 +1,59 @@
 object MainForm: TMainForm
   Left = 556
-  Height = 391
+  Height = 489
   Top = 221
-  Width = 620
-  Caption = 'AI Chat client'
-  ClientHeight = 391
-  ClientWidth = 620
+  Width = 775
+  Caption = 'NComp AI Chat client'
+  ClientHeight = 489
+  ClientWidth = 775
+  DesignTimePPI = 120
+  Position = poWorkAreaCenter
+  LCLVersion = '4.2.0.0'
   OnClose = FormClose
   OnCreate = FormCreate
-  Position = poWorkAreaCenter
-  LCLVersion = '3.6.0.0'
   object SendBtn: TButton
-    Left = 531
-    Height = 25
-    Top = 6
-    Width = 82
+    Left = 664
+    Height = 28
+    Hint = 'Send Message to AI (Shortcut: Alt-S)'
+    Top = 8
+    Width = 102
     Anchors = [akTop, akRight]
-    Caption = 'Send'
+    Caption = '&Send'
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 3
     OnClick = SendBtnClick
   end
   object UrlEdt: TEdit
-    Left = 6
-    Height = 34
-    Top = 6
-    Width = 182
+    Left = 8
+    Height = 28
+    Top = 8
+    Width = 312
     TabOrder = 0
     TextHint = 'URL to AI'
   end
   object ModelEdt: TEdit
-    Left = 192
-    Height = 34
-    Top = 6
-    Width = 179
+    Left = 321
+    Height = 28
+    Top = 8
+    Width = 224
     TabOrder = 1
     TextHint = 'Model Name'
   end
   object ChatmessageMemo: TMemo
-    Left = 6
-    Height = 90
-    Top = 40
-    Width = 607
+    Left = 8
+    Height = 134
+    Top = 42
+    Width = 758
     Anchors = [akTop, akLeft, akRight]
     ScrollBars = ssAutoBoth
     TabOrder = 2
   end
   object ChatHistoryMemo: TMemo
-    Left = 6
-    Height = 225
-    Top = 160
-    Width = 607
+    Left = 8
+    Height = 273
+    Top = 208
+    Width = 758
     Anchors = [akTop, akLeft, akRight, akBottom]
     ReadOnly = True
     ScrollBars = ssAutoBoth
@@ -57,19 +61,22 @@ object MainForm: TMainForm
     WordWrap = False
   end
   object NewChatBtn: TButton
-    Left = 378
-    Height = 25
-    Top = 6
-    Width = 80
-    Caption = 'New Chat'
+    Left = 544
+    Height = 28
+    Hint = 'Clear Chat history (Shortcut: Alt-N)'
+    Top = 8
+    Width = 100
+    Caption = '&New Chat'
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 5
     OnClick = NewChatBtnClick
   end
   object chathistoryLbl: TLabel
-    Left = 6
-    Height = 17
-    Top = 141
-    Width = 82
+    Left = 8
+    Height = 20
+    Top = 184
+    Width = 81
     Caption = 'Chat History'
   end
 end
